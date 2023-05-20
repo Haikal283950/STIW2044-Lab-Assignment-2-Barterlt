@@ -216,6 +216,7 @@ class _registration_screenState extends State<registration_screen> {
                           borderRadius: BorderRadius.circular(35)),
                     ),
                     onPressed: () {
+                      print(_usernameEditingController.text);
                       setState(() {
                         _autoValidateMode = AutovalidateMode.always;
                         Timer(Duration(milliseconds: 100), () {

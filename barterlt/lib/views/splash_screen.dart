@@ -2,6 +2,8 @@ import 'package:barterlt/views/main_screen.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
 
+import 'package:shared_preferences/shared_preferences.dart';
+
 class Splash_screen extends StatefulWidget {
   const Splash_screen({super.key});
 
@@ -13,15 +15,16 @@ class _Splash_screenState extends State<Splash_screen> {
   @override
   void initState() {
     super.initState();
-    Timer(
-      Duration(seconds: 5),
-      () => Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          builder: (content) => main_screen(),
-        ),
-      ),
-    );
+    Timer(Duration(seconds: 5), () => checkLogin());
+    // Timer(
+    //   Duration(seconds: 5),
+    //   () => Navigator.pushReplacement(
+    //     context,
+    //     MaterialPageRoute(
+    //       builder: (content) => main_screen(),
+    //     ),
+    //   ),
+    // );
   }
 
   @override
@@ -67,5 +70,14 @@ class _Splash_screenState extends State<Splash_screen> {
         )
       ],
     );
+  }
+
+  checkLogin() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String username = (prefs.getString('username')) ?? '';
+    String password = (prefs.getString('password')) ?? '';
+    print("TEST" + username + " " + password);
+    Navigator.pushReplacement(
+        context, MaterialPageRoute(builder: (context) => main_screen()));
   }
 }

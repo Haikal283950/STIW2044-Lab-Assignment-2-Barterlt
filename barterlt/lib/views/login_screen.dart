@@ -1,8 +1,10 @@
 import 'dart:convert';
-
 import 'package:barterlt/views/registration_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:lottie/lottie.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import '../model/user.dart';
 
 class login_screen extends StatefulWidget {
   const login_screen({super.key});
@@ -12,6 +14,16 @@ class login_screen extends StatefulWidget {
 }
 
 class _login_screenState extends State<login_screen> {
+  TextEditingController _usernameControl = TextEditingController();
+  TextEditingController _passwordControl = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
+  @override
+  void dispose() {
+    _usernameControl.dispose();
+    _passwordControl.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -75,31 +87,47 @@ class _login_screenState extends State<login_screen> {
                   padding: EdgeInsets.symmetric(horizontal: 5),
                   child: Column(
                     children: [
-                      TextFormField(
-                        autofocus: true,
-                        decoration: InputDecoration(
-                            prefixIcon: Icon(Icons.person),
-                            contentPadding:
-                                EdgeInsets.symmetric(horizontal: 20),
-                            labelText: "Username",
-                            filled: true,
-                            fillColor: Color.fromARGB(255, 214, 226, 240),
-                            border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(35))),
-                      ),
-                      SizedBox(
-                        height: MediaQuery.of(context).size.height * 0.01,
-                      ),
-                      TextFormField(
-                        decoration: InputDecoration(
-                            prefixIcon: Icon(Icons.lock),
-                            contentPadding:
-                                EdgeInsets.symmetric(horizontal: 20),
-                            labelText: "Password",
-                            filled: true,
-                            fillColor: Color.fromARGB(255, 214, 226, 240),
-                            border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(35))),
+                      Form(
+                        autovalidateMode: AutovalidateMode.onUserInteraction,
+                        key: _formKey,
+                        child: Column(
+                          children: [
+                            TextFormField(
+                              controller: _usernameControl,
+                              validator: (value) => value!.isEmpty
+                                  ? "Please insert your username"
+                                  : null,
+                              decoration: InputDecoration(
+                                  prefixIcon: Icon(Icons.person),
+                                  contentPadding:
+                                      EdgeInsets.symmetric(horizontal: 20),
+                                  labelText: "Username",
+                                  filled: true,
+                                  fillColor: Color.fromARGB(255, 214, 226, 240),
+                                  border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(35))),
+                            ),
+                            SizedBox(
+                              height: MediaQuery.of(context).size.height * 0.01,
+                            ),
+                            TextFormField(
+                              controller: _passwordControl,
+                              obscureText: true,
+                              validator: (value) => value!.isEmpty
+                                  ? "Please insert your Password"
+                                  : null,
+                              decoration: InputDecoration(
+                                  prefixIcon: Icon(Icons.lock),
+                                  contentPadding:
+                                      EdgeInsets.symmetric(horizontal: 20),
+                                  labelText: "Password",
+                                  filled: true,
+                                  fillColor: Color.fromARGB(255, 214, 226, 240),
+                                  border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(35))),
+                            ),
+                          ],
+                        ),
                       ),
                       SizedBox(
                         height: size.height * 0.015,
@@ -113,10 +141,15 @@ class _login_screenState extends State<login_screen> {
                           ),
                           onPressed: () {
                             // sendRequest();
+                            if (_formKey.currentState!.validate()) {
+                              sendRequest();
+                            } else {
+                              print("invalid");
+                            }
                           },
                           child: Center(
                             child: Text(
-                              "Submit",
+                              "Login",
                               style: Theme.of(context).textTheme.displaySmall,
                             ),
                           )),
@@ -153,4 +186,57 @@ class _login_screenState extends State<login_screen> {
   //   var response = await http.get(url);
   //   print(response.statusCode);
   // }
+
+  Future<void> sendRequest() async {
+    String username = _usernameControl.text;
+    String password = _passwordControl.text;
+    http.post(Uri.parse('http://10.0.2.2/barterlt/php/login.php'), body: {
+      "username": username,
+      "password": password
+    }).then((response) async {
+      if (response.statusCode == 200 && response.body != "failed") {
+        final jsonResponse = json.decode(response.body);
+        print(jsonResponse);
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        await prefs.setString('username', username);
+        await prefs.setString('password', password);
+        User user = User.fromJson(jsonResponse);
+        _showDialog(context);
+      } else {
+        print("Fail");
+      }
+    });
+  }
+
+  void _showDialog(BuildContext context) {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text("Login success!"),
+            content: Container(
+              width: MediaQuery.of(context).size.height * 0.4,
+              height: MediaQuery.of(context).size.height * 0.4,
+              child: Column(
+                children: [
+                  LottieBuilder.network(
+                      'https://assets4.lottiefiles.com/packages/lf20_s2lryxtd.json'),
+                  Text(
+                    "Welcome back buddy!",
+                    style: Theme.of(context).textTheme.displayMedium,
+                  )
+                ],
+              ),
+            ),
+            actions: [
+              TextButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                    Navigator.pop(context);
+                  },
+                  child: Text("Back to menu!"))
+            ],
+          );
+        });
+  }
 }

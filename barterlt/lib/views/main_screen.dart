@@ -3,6 +3,7 @@ import 'package:barterlt/views/tab_page1.dart';
 import 'package:barterlt/views/tab_page2.dart';
 import 'package:barterlt/views/tab_page3.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class main_screen extends StatefulWidget {
   const main_screen({super.key});
@@ -26,7 +27,9 @@ class _main_screenState extends State<main_screen> {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-            onPressed: () {},
+            onPressed: () {
+              logout();
+            },
             icon: Icon(
               Icons.logout,
               color: Colors.red,
@@ -86,5 +89,16 @@ class _main_screenState extends State<main_screen> {
         mainTitle = "Notifications";
       }
     });
+  }
+
+  void logout() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString('username', '');
+    prefs.setString('password', '');
+    Navigator.pushNamedAndRemoveUntil(
+      context,
+      '/',
+      (route) => false,
+    );
   }
 }
