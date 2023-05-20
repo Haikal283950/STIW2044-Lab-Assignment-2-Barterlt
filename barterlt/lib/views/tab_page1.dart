@@ -10,8 +10,8 @@ class tab_page1 extends StatefulWidget {
 class _tab_page1State extends State<tab_page1> {
   @override
   Widget build(BuildContext context) {
-    return const Center(
-      child: Text("POST TAB"),
+    return Center(
+      child: Container(child: Text("POST TAB")),
     );
   }
 }

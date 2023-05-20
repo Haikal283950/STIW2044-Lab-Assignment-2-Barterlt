@@ -16,17 +16,28 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
           primarySwatch: Colors.blue,
           textTheme: TextTheme(
-              displayLarge: TextStyle(
-                  fontFamily: 'Gotham',
-                  color: Color.fromARGB(255, 8, 9, 87),
-                  fontSize: 35,
-                  fontWeight: FontWeight.bold),
-              bodySmall: TextStyle(
-                  fontFamily: 'Gotham',
-                  color: Color.fromARGB(255, 8, 9, 87),
-                  fontSize: 13),
-              displaySmall: TextStyle(
-                  fontFamily: 'Gotham', color: Colors.white, fontSize: 13))),
+            displayLarge: TextStyle(
+                fontFamily: 'Gotham',
+                color: Color.fromARGB(255, 8, 9, 87),
+                fontSize: 35,
+                fontWeight: FontWeight.bold),
+            bodyMedium: TextStyle(
+                fontFamily: 'Gotham',
+                color: Color.fromARGB(255, 8, 9, 87),
+                fontSize: 20,
+                fontWeight: FontWeight.bold),
+            bodySmall: TextStyle(
+                fontFamily: 'Gotham',
+                color: Color.fromARGB(255, 8, 9, 87),
+                fontSize: 13),
+            displayMedium: TextStyle(
+                fontFamily: 'Gotham',
+                fontWeight: FontWeight.w400,
+                color: Color.fromARGB(255, 14, 54, 141),
+                fontSize: 16),
+            displaySmall: TextStyle(
+                fontFamily: 'Gotham', color: Colors.white, fontSize: 13),
+          )),
       home: Scaffold(
         body: Splash_screen(),
       ),

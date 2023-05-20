@@ -25,14 +25,29 @@ class _main_screenState extends State<main_screen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Barterlt"),
+        leading: IconButton(
+            onPressed: () {},
+            icon: Icon(
+              Icons.logout,
+              color: Colors.red,
+            )),
+        backgroundColor: Colors.white,
+        elevation: 0,
+        title: Text(
+          "Barterlt",
+          style: Theme.of(context).textTheme.displayMedium,
+        ),
+        centerTitle: true,
         actions: [
           IconButton(
               onPressed: () {
                 Navigator.push(context,
                     MaterialPageRoute(builder: (context) => login_screen()));
               },
-              icon: Icon(Icons.person))
+              icon: Icon(
+                Icons.person,
+                color: Color.fromARGB(255, 8, 9, 87),
+              ))
         ],
       ),
       body: tab_childs[_currentIndex],
@@ -42,15 +57,15 @@ class _main_screenState extends State<main_screen> {
         currentIndex: _currentIndex,
         items: [
           BottomNavigationBarItem(
-            icon: Icon(Icons.abc_sharp),
+            icon: Icon(Icons.add_circle),
             label: "Post",
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.memory_sharp),
+            icon: Icon(Icons.attach_money),
             label: "Trade",
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.accessibility_new_outlined),
+            icon: Icon(Icons.notifications),
             label: "Notifications",
           ),
         ],

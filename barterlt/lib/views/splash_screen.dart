@@ -14,9 +14,14 @@ class _Splash_screenState extends State<Splash_screen> {
   void initState() {
     super.initState();
     Timer(
-        Duration(seconds: 5),
-        () => Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (content) => main_screen())));
+      Duration(seconds: 5),
+      () => Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (content) => main_screen(),
+        ),
+      ),
+    );
   }
 
   @override
