@@ -95,12 +95,46 @@ class _Splash_screenState extends State<Splash_screen> {
         SharedPreferences prefs = await SharedPreferences.getInstance();
         await prefs.setString('username', username);
         await prefs.setString('password', password);
-        User user = User.fromJson(jsonResponse);
+        User user = User.fromJson(jsonResponse['data']);
         Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (context) => main_screen()));
+            context,
+            MaterialPageRoute(
+                builder: (context) => main_screen(
+                      user: user,
+                    )));
+      } else {
+        print("ERROR");
+        User user = User(
+            user_id: '',
+            username: '',
+            email: '',
+            password: '',
+            first_name: '',
+            last_name: '',
+            account_created: '');
+        Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+                builder: (context) => main_screen(
+                      user: user,
+                    )));
       }
-    }).onError((error, stackTrace) {
-      print(error);
+    }).catchError((e) {
+      print(e);
+      User user = User(
+          user_id: '',
+          username: '',
+          email: '',
+          password: '',
+          first_name: '',
+          last_name: '',
+          account_created: '');
+      Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+              builder: (context) => main_screen(
+                    user: user,
+                  )));
     });
   }
 }

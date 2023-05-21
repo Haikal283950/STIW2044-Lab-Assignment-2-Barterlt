@@ -8,7 +8,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../model/user.dart';
 
 class main_screen extends StatefulWidget {
-  const main_screen({super.key});
+  final User user;
+  const main_screen({super.key, required this.user});
 
   @override
   State<main_screen> createState() => _main_screenState();
@@ -21,6 +22,8 @@ class _main_screenState extends State<main_screen> {
   @override
   void initState() {
     super.initState();
+    print(widget.user.first_name);
+    _showRoundedSnackbar(context, "${widget.user.first_name ?? ''}");
     tab_childs = [tab_page1(), tab_page2(), tab_page3()];
   }
 
@@ -102,5 +105,23 @@ class _main_screenState extends State<main_screen> {
       '/',
       (route) => false,
     );
+  }
+
+  void _showRoundedSnackbar(BuildContext context, String userText) {
+    final snackBar = SnackBar(
+      backgroundColor: Colors.grey[900],
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(16.0),
+      ),
+      content: Text(
+        "Welcome back $userText",
+        style: TextStyle(color: Colors.white, fontFamily: "gotham"),
+      ),
+      duration: Duration(seconds: 3),
+    );
+
+    Future.delayed(Duration(milliseconds: 500), () {
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    });
   }
 }

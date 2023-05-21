@@ -10,13 +10,13 @@ class User {
   String? account_created;
 
   User({
-    required this.user_id,
-    required this.username,
-    required this.email,
-    required this.password,
-    required this.first_name,
-    required this.last_name,
-    required this.account_created,
+    this.user_id,
+    this.username,
+    this.email,
+    this.password,
+    this.first_name,
+    this.last_name,
+    this.account_created,
   });
 
   User.fromJson(Map<String, dynamic> json) {
@@ -27,5 +27,17 @@ class User {
     first_name = json['first_name'];
     last_name = json['last_name'];
     account_created = json['account_created'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['user_id'] = user_id;
+    data['username'] = username;
+    data['email'] = email;
+    data['password'] = password;
+    data['first_name'] = first_name;
+    data['last_name'] = last_name;
+    data['account_created'] = account_created;
+    return data;
   }
 }

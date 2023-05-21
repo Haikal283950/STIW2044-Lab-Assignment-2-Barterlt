@@ -48,6 +48,8 @@ class _register_successState extends State<register_success> {
                   ),
                   onPressed: () {
                     Navigator.pop(context);
+                    Navigator.pop(context);
+                    Navigator.pop(context);
                   },
                   child: Center(
                     child: Text(
