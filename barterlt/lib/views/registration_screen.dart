@@ -87,6 +87,7 @@ class _registration_screenState extends State<registration_screen> {
                 ),
                 Container(
                   height: size.height * 0.4,
+                  //This is where the width of the image is defined
                   width: size.height * 0.4,
                   decoration: BoxDecoration(
                       image: DecorationImage(
