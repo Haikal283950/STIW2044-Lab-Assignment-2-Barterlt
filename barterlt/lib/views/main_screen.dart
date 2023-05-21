@@ -5,6 +5,8 @@ import 'package:barterlt/views/tab_page3.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../model/user.dart';
+
 class main_screen extends StatefulWidget {
   const main_screen({super.key});
 

@@ -9,24 +9,15 @@ class tab_page1 extends StatefulWidget {
 }
 
 class _tab_page1State extends State<tab_page1> {
-  String username = '';
-  String password = '';
   @override
   void initState() {
     super.initState();
-    checkLog();
   }
 
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: Container(child: Text("Welcome back " + username)),
+      child: Container(child: Text("Posts Screen")),
     );
-  }
-
-  void checkLog() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    username = (prefs.getString('username')) ?? '';
-    password = (prefs.getString('password')) ?? '';
   }
 }

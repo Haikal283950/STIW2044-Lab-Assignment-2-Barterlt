@@ -47,8 +47,7 @@ class _register_successState extends State<register_success> {
                         borderRadius: BorderRadius.circular(35)),
                   ),
                   onPressed: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => main_screen()));
+                    Navigator.pop(context);
                   },
                   child: Center(
                     child: Text(

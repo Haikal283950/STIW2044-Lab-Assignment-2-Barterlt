@@ -1,8 +1,12 @@
+import 'dart:convert';
+
 import 'package:barterlt/views/main_screen.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
 
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart' as http;
+import '../model/user.dart';
 
 class Splash_screen extends StatefulWidget {
   const Splash_screen({super.key});
@@ -77,7 +81,26 @@ class _Splash_screenState extends State<Splash_screen> {
     String username = (prefs.getString('username')) ?? '';
     String password = (prefs.getString('password')) ?? '';
     print("TEST" + username + " " + password);
-    Navigator.pushReplacement(
-        context, MaterialPageRoute(builder: (context) => main_screen()));
+    sendRequest(username, password);
+  }
+
+  Future<void> sendRequest(String username, String password) async {
+    http.post(Uri.parse('http://10.0.2.2/barterlt/php/login.php'), body: {
+      "username": username,
+      "password": password
+    }).then((response) async {
+      if (response.statusCode == 200 && response.body != "failed") {
+        final jsonResponse = json.decode(response.body);
+        print(jsonResponse);
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        await prefs.setString('username', username);
+        await prefs.setString('password', password);
+        User user = User.fromJson(jsonResponse);
+        Navigator.pushReplacement(
+            context, MaterialPageRoute(builder: (context) => main_screen()));
+      }
+    }).onError((error, stackTrace) {
+      print(error);
+    });
   }
 }

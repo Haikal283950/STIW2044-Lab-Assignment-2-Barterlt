@@ -190,6 +190,7 @@ class _login_screenState extends State<login_screen> {
   Future<void> sendRequest() async {
     String username = _usernameControl.text;
     String password = _passwordControl.text;
+
     http.post(Uri.parse('http://10.0.2.2/barterlt/php/login.php'), body: {
       "username": username,
       "password": password
@@ -202,9 +203,11 @@ class _login_screenState extends State<login_screen> {
         await prefs.setString('password', password);
         User user = User.fromJson(jsonResponse);
         _showDialog(context);
-      } else {
+      } else if (response.body == "failed") {
         print("Fail");
       }
+    }).catchError((e) {
+      _showError(context);
     });
   }
 
@@ -235,6 +238,37 @@ class _login_screenState extends State<login_screen> {
                     Navigator.pop(context);
                   },
                   child: Text("Back to menu!"))
+            ],
+          );
+        });
+  }
+
+  void _showError(BuildContext context) {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text("Invalid account!"),
+            content: Container(
+              width: MediaQuery.of(context).size.height * 0.4,
+              height: MediaQuery.of(context).size.height * 0.4,
+              child: Column(
+                children: [
+                  LottieBuilder.network(
+                      'https://assets5.lottiefiles.com/packages/lf20_mrrytuew.json'),
+                  Text(
+                    "Invalid account! Check again!",
+                    style: Theme.of(context).textTheme.displayMedium,
+                  )
+                ],
+              ),
+            ),
+            actions: [
+              TextButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: Text("Ok"))
             ],
           );
         });
