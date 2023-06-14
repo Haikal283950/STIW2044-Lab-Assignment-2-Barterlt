@@ -37,8 +37,8 @@ class MyApp extends StatelessWidget {
                 fontSize: 16),
             displaySmall: TextStyle(
                 fontFamily: 'Gotham', color: Colors.white, fontSize: 13),
-          )),
-      home: Scaffold(
+          )).copyWith(useMaterial3: true),
+      home: const Scaffold(
         body: Splash_screen(),
       ),
     );
