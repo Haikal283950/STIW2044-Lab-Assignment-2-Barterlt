@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:barterlt/model/user.dart';
+import 'package:barterlt/myConfig.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:geocoding/geocoding.dart';
@@ -307,12 +308,7 @@ class _add_itemState extends State<add_item> {
       }
     }
 
-    print('Base64 Encoded Files:');
-    for (int i = 0; i < base64ed.length; i++) {
-      print('Image ${i + 1}: ${base64ed[i]}');
-    }
-
-    http.post(Uri.parse('http://10.0.2.2/barterlt/php/post_item.php'), body: {
+    http.post(Uri.parse(server + '/barterlt/php/post_item.php'), body: {
       'product_name': productName,
       'product_description': productDescription,
       'product_quantity': productQuantity,
@@ -340,7 +336,11 @@ class _add_itemState extends State<add_item> {
         }
         Navigator.pop(context);
       } else {
-        _showRoundedSnackbar(context, "Error connecting to the database!");
+        print(response.body.toString());
+        _showRoundedSnackbar(
+            context,
+            "Error connecting to the database!" +
+                response.statusCode.toString());
       }
     });
   }
@@ -366,7 +366,7 @@ class _add_itemState extends State<add_item> {
         borderRadius: BorderRadius.circular(16.0),
       ),
       content: Text(
-        "Welcome back $userText",
+        "$userText",
         style: TextStyle(color: Colors.white, fontFamily: "gotham"),
       ),
       duration: Duration(seconds: 3),

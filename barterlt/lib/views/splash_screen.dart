@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:barterlt/myConfig.dart';
 import 'package:barterlt/views/main_screen.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
@@ -85,7 +86,7 @@ class _Splash_screenState extends State<Splash_screen> {
   }
 
   Future<void> sendRequest(String username, String password) async {
-    http.post(Uri.parse('http://10.0.2.2/barterlt/php/login.php'), body: {
+    http.post(Uri.parse(server + '/barterlt/php/login.php'), body: {
       "username": username,
       "password": password
     }).then((response) async {

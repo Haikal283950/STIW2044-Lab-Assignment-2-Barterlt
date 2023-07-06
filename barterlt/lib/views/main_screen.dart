@@ -1,11 +1,13 @@
 import 'package:barterlt/views/add_item.dart';
 import 'package:barterlt/views/login_screen.dart';
+import 'package:barterlt/views/shopping_cart.dart';
 import 'package:barterlt/views/tab_page1.dart';
 import 'package:barterlt/views/tab_page2.dart';
 import 'package:barterlt/views/tab_page3.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
+import 'package:draggable_fab/draggable_fab.dart';
 
 import '../model/user.dart';
 
@@ -30,7 +32,9 @@ class _main_screenState extends State<main_screen> {
       tab_page1(
         user: widget.user,
       ),
-      tab_page2(),
+      tab_page2(
+        user: widget.user,
+      ),
       tab_page3()
     ];
   }
@@ -86,31 +90,40 @@ class _main_screenState extends State<main_screen> {
           ),
         ],
       ),
-      floatingActionButton: SpeedDial(
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-          overlayOpacity: 0.2,
-          icon: Icons.menu,
-          activeIcon: Icons.close,
-          curve: Curves.bounceIn,
-          overlayColor: Colors.black,
-          backgroundColor: Color.fromARGB(255, 8, 9, 87),
-          foregroundColor: Colors.white,
-          children: [
-            SpeedDialChild(
-              shape: CircleBorder(),
-              child: Icon(Icons.add),
-              onTap: () {
-                //TODO NAVIGATION
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => add_item(
-                              user: widget.user,
-                            )));
-              },
-            ),
-          ]),
+      floatingActionButton: DraggableFab(
+        child: SpeedDial(
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+            overlayOpacity: 0.2,
+            icon: Icons.menu,
+            activeIcon: Icons.close,
+            curve: Curves.bounceIn,
+            overlayColor: Colors.black,
+            backgroundColor: Color.fromARGB(255, 8, 9, 87),
+            foregroundColor: Colors.white,
+            children: [
+              SpeedDialChild(
+                shape: CircleBorder(),
+                child: Icon(Icons.add),
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => add_item(
+                                user: widget.user,
+                              )));
+                },
+              ),
+              SpeedDialChild(
+                shape: CircleBorder(),
+                child: Icon(Icons.shopping_cart),
+                onTap: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => ShoppingCart()));
+                },
+              )
+            ]),
+      ),
     );
   }
 
@@ -147,7 +160,7 @@ class _main_screenState extends State<main_screen> {
         borderRadius: BorderRadius.circular(16.0),
       ),
       content: Text(
-        "Welcome back $userText",
+        "Welcome back",
         style: TextStyle(color: Colors.white, fontFamily: "gotham"),
       ),
       duration: Duration(seconds: 3),

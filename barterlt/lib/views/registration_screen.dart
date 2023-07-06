@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:barterlt/myConfig.dart';
 import 'package:barterlt/views/login_screen.dart';
 import 'package:barterlt/views/main_screen.dart';
 import 'package:barterlt/views/register_success.dart';
@@ -265,7 +266,7 @@ class _registration_screenState extends State<registration_screen> {
     String _password = _passwordEditingController.text;
     String _email = _emailEditingController.text;
     String _username = _usernameEditingController.text;
-    http.post(Uri.parse('http://10.0.2.2/barterlt/php/register.php'), body: {
+    http.post(Uri.parse(server + '/barterlt/php/register.php'), body: {
       "first_name": _first_name,
       "last_name": _last_name,
       "email": _email,

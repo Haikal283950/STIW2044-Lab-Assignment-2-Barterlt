@@ -5,6 +5,7 @@ import 'package:http/http.dart' as http;
 import 'package:lottie/lottie.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../model/user.dart';
+import '../myConfig.dart';
 
 class login_screen extends StatefulWidget {
   const login_screen({super.key});
@@ -180,18 +181,11 @@ class _login_screenState extends State<login_screen> {
     );
   }
 
-  //TESTING OUT PHP
-  // Future<void> sendRequest() async {
-  //   var url = Uri.parse('http://10.19.59.108');
-  //   var response = await http.get(url);
-  //   print(response.statusCode);
-  // }
-
   Future<void> sendRequest() async {
     String username = _usernameControl.text;
     String password = _passwordControl.text;
 
-    http.post(Uri.parse('http://10.0.2.2/barterlt/php/login.php'), body: {
+    http.post(Uri.parse(server + '/barterlt/php/login.php'), body: {
       "username": username,
       "password": password
     }).then((response) async {
@@ -203,6 +197,7 @@ class _login_screenState extends State<login_screen> {
         await prefs.setString('password', password);
         User user = User.fromJson(jsonResponse);
         _showDialog(context);
+        setState(() {});
       } else if (response.body == "failed") {
         print("Fail");
       }
